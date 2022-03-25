@@ -5,11 +5,11 @@ import { NavLink } from 'react-router-dom';
 const Home = () => {
   return(
     <>
-      <Row>
+      <Row className="align-items-center">
         <Col>
           <h2>All Posts</h2>
         </Col>
-        <Col className="d-flex justify-content-end align-items-center">
+        <Col className="d-flex justify-content-end">
           <Button as={NavLink} to="/post/add" variant="info" className="text-light">Add Post</Button>
         </Col>
       </Row>
