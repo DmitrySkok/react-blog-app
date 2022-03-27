@@ -25,12 +25,12 @@ const SinglePost = () => {
   if(!postData) return <Navigate to="/"/>
   return (
     <>
-      <Row className="align-items-center m-auto" style={{ width: '40rem' }}>
+      <Row className="align-items-center mx-auto" style={{ maxWidth: '40rem' }}>
         <Row>
           <Col >
             <h2>{postData.title}</h2>
           </Col>
-          <Col className="d-flex justify-content-flex-end">
+          <Col className="d-flex justify-content-end align-items-center">
             <Button key={postData.id} as={Link} to={"/post/edit/" + postData.id} variant="outline-info" className="me-1">Edit</Button>
             <Button variant="outline-danger" onClick={handleShow}>Delete</Button>
           </Col>
