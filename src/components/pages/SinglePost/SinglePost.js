@@ -9,7 +9,6 @@ import { useState } from 'react';
 const SinglePost = () => {
   const { id } = useParams();
   const postData = useSelector(state => getPostsById(state, id));
-  console.log(postData);
 
   const [show, setShow] = useState(false);
 

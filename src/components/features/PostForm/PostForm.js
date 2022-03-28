@@ -1,29 +1,19 @@
-import { Form, Button } from 'react-bootstrap';
+import { Action } from 'history';
+import PropTypes from 'prop-types'
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { addPost } from '../../../redux/postsRedux';
+import { Form, Button } from 'react-bootstrap';
 
-const AddPostForm = () => {
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [publishedDate, setPublishedDate] = useState('');
-  const [shortDescription, setShortDescription] = useState('');
-  const [content, setContent] = useState('');
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+const PostForm = ({ action, actionText, ...props }) => {
+  const [title, setTitle] = useState(props.title || '');
+  const [author, setAuthor] = useState(props.author || '');
+  const [publishedDate, setPublishedDate] = useState(props.publishedDate || '');
+  const [shortDescription, setShortDescription] = useState(props.shortDescription || '');
+  const [content, setContent] = useState(props.content || '');
 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch( addPost ( {title, author, publishedDate, shortDescription, content}));
-    setTitle('');
-    setAuthor('');
-    setPublishedDate('');
-    setShortDescription('');
-    setContent('');
-    navigate("/", { replace: true });
-  }
+    action({ title, author, publishedDate, shortDescription, content });
+  };
 
   return (
     <Form className="mx-auto" style={{ maxWidth: '50rem' }} onSubmit={handleSubmit}>
@@ -77,10 +67,20 @@ const AddPostForm = () => {
       </Form.Group>
 
       <Button variant="primary" type="submit">
-        Add post
+        {actionText}
       </Button>
     </Form>
-  );
+  )
 }
 
-export default AddPostForm;
+PostForm.propTypes = {
+  action: PropTypes.func.isRequired,
+  actionText: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  author: PropTypes.string,
+  publishedDate: PropTypes.string,
+  shortDescription: PropTypes.string,
+  content: PropTypes.string
+}
+
+export default PostForm
