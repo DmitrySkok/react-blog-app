@@ -5,6 +5,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useForm } from "react-hook-form";
 
 const PostForm = ({ action, actionText, ...props }) => {
   const [title, setTitle] = useState(props.title || '');
@@ -12,51 +13,68 @@ const PostForm = ({ action, actionText, ...props }) => {
   const [publishedDate, setPublishedDate] = useState(props.publishedDate || new Date());
   const [shortDescription, setShortDescription] = useState(props.shortDescription || '');
   const [content, setContent] = useState(props.content || '');
+  const [contentError, setContentError] = useState(false);
+  const [dateError, setDateError] = useState(false);
+  const { register, handleSubmit: validate, formState: { errors } } = useForm();
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    action({ title, author, publishedDate, shortDescription, content });
+  const handleSubmit = () => {
+    setContentError(!content)
+    setDateError(!publishedDate)
+    if(content && publishedDate) {
+      action({ title, author, publishedDate, shortDescription, content });
+    }
   };
 
   return (
-    <Form className="mx-auto" style={{ maxWidth: '50rem' }} onSubmit={handleSubmit}>
+    <Form className="mx-auto" style={{ maxWidth: '50rem' }} onSubmit={validate(handleSubmit)}>
       <Form.Group className="mb-3" controlId="formTitle">
         <Form.Label>Title</Form.Label>
         <Form.Control 
+          {...register("title", { required: true, minLength: 3 })}
           type="text" 
           placeholder="Enter post title"
           value={title}
           onChange={e => setTitle(e.target.value)}  
         />
+        {errors?.title?.type === "required" && <small className="d-block form-text text-warning mt-2">This field is required</small>}
+        {errors?.title?.type === "minLength" && <small className="d-block form-text text-warning mt-2">Title is too short (min is 3)</small>}
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formAuthor">
         <Form.Label>Author</Form.Label>
-        <Form.Control 
+        <Form.Control
+          {...register("author", { required: true, minLength: 3 })} 
           type="text"
           placeholder="Enter post author"
           value={author}
           onChange={e => setAuthor(e.target.value)} 
         />
+        {errors?.author?.type === "required" && <small className="d-block form-text text-warning mt-2">This field is required</small>}
+        {errors?.author?.type === "minLength" && <small className="d-block form-text text-warning mt-2">Author is too short (min is 3)</small>}
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="FormPublished">
         <Form.Label>Published Date</Form.Label>
         <DatePicker dateFormat="dd/MM/yyyy" selected={publishedDate} onChange={(date) => setPublishedDate(date)} />
+        {dateError && <small className="d-block form-text text-warning mt-2">This field is required</small>}
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="FormShortDescription">
         <Form.Label>Short description</Form.Label>
         <Form.Control 
+          {...register("shortDescription", { required: true, minLength: 20 })}
           as="textarea" 
           value={shortDescription}
           onChange={e => setShortDescription(e.target.value)} 
         />
+        {errors?.shortDescription?.type === "required" && <small className="d-block form-text text-warning mt-2">This field is required</small>}
+        {errors?.shortDescription?.type === "minLength" && <small className="d-block form-text text-warning mt-2">Description is too short (min is 20)</small>}
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="FormMainContent">
           <Form.Label>Main content</Form.Label>
           <ReactQuill theme="snow" value={content} onChange={setContent} />
+          {contentError && <small className="d-block form-text text-warning mt-2">This field is required</small>}
       </Form.Group>
 
       <Button variant="primary" type="submit">
