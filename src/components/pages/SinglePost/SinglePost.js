@@ -40,7 +40,7 @@ const SinglePost = () => {
           <b>Published: </b><span className="text-muted">{postData.publishedDate}</span>
           <br/>
           <br/>
-          <p>{postData.content}</p>
+          <p dangerouslySetInnerHTML={{ __html: postData.content }} />
         </Col>
       </Row>
 
