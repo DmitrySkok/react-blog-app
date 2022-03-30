@@ -6,6 +6,7 @@ import 'react-quill/dist/quill.snow.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from "react-hook-form";
+import styles from './PostForm.module.scss';
 
 const PostForm = ({ action, actionText, ...props }) => {
   const [title, setTitle] = useState(props.title || '');
@@ -55,7 +56,7 @@ const PostForm = ({ action, actionText, ...props }) => {
 
       <Form.Group className="mb-3" controlId="FormPublished">
         <Form.Label>Published Date</Form.Label>
-        <DatePicker dateFormat="dd/MM/yyyy" selected={publishedDate} onChange={(date) => setPublishedDate(date)} />
+        <DatePicker className={styles.dataPicker} dateFormat="dd/MM/yyyy" selected={publishedDate} onChange={(date) => setPublishedDate(date)} />
         {dateError && <small className="d-block form-text text-warning mt-2">This field is required</small>}
       </Form.Group>
 
