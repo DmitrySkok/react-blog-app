@@ -5,6 +5,7 @@ import { Row, Col, Button, Modal } from 'react-bootstrap';
 import { Link, Navigate } from 'react-router-dom';
 import { removePost } from '../../../redux/postsRedux';
 import { useState } from 'react';
+import dateToStr from '../../../utils/dateToStr';
 
 const SinglePost = () => {
   const { id } = useParams();
@@ -37,7 +38,7 @@ const SinglePost = () => {
         <Col key={postData.id}>
           <b>Author: </b><span className="text-muted">{postData.author}</span>
           <br/>
-          <b>Published: </b><span className="text-muted">{postData.publishedDate}</span>
+          <b>Published: </b><span className="text-muted">{dateToStr(postData.publishedDate)}</span>
           <br/>
           <br/>
           <p dangerouslySetInnerHTML={{ __html: postData.content }} />
