@@ -1,15 +1,20 @@
-import { useSelector } from 'react-redux'
-import { getAllPosts } from '../../../redux/postsRedux';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom'
+import { getPostsByCategory } from '../../../redux/postsRedux';
 import { Card, Button, Row, Col } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import dateToStr from '../../../utils/dateToStr';
 
-const Posts = () => {
-  const posts = useSelector(getAllPosts);
-
+const SingleCategory = () => {
+  const { categoryName } = useParams();
+  const categoryData = useSelector(state => getPostsByCategory(state, categoryName));
+  console.log(categoryData);
+  if(!categoryData || categoryData.length === 0) return <h1 className='text-center'>No posts with this category</h1>
   return (
-    <Row xs={1} md={2} lg={3} className="g-3">
-        {posts.map(post => (
+    <>
+      <h1 className='text-center'>{categoryData.category}</h1>
+      <Row xs={1} md={2} lg={3} className="g-3">
+        {categoryData.map(post => (
           <Col key={post.id}>
             <Card>
               <Card.Body>
@@ -32,7 +37,8 @@ const Posts = () => {
           </Col>
         ))}
     </Row>
+    </>
   )
 }
 
-export default Posts
+export default SingleCategory

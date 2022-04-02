@@ -7,6 +7,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useForm } from "react-hook-form";
 import styles from './PostForm.module.scss';
+import { useSelector } from 'react-redux'
+import { getAllCategories } from '../../../redux/categoriesReducer';
 
 const PostForm = ({ action, actionText, ...props }) => {
   const [title, setTitle] = useState(props.title || '');
@@ -18,11 +20,14 @@ const PostForm = ({ action, actionText, ...props }) => {
   const [dateError, setDateError] = useState(false);
   const { register, handleSubmit: validate, formState: { errors } } = useForm();
 
+  const categories = useSelector(getAllCategories);
+  const [category, setCategory] = useState(props.category || '');
+
   const handleSubmit = () => {
     setContentError(!content)
     setDateError(!publishedDate)
     if(content && publishedDate) {
-      action({ title, author, publishedDate, shortDescription, content });
+      action({ title, author, publishedDate, shortDescription, content, category });
     }
   };
 
@@ -60,6 +65,16 @@ const PostForm = ({ action, actionText, ...props }) => {
         {dateError && <small className="d-block form-text text-warning mt-2">This field is required</small>}
       </Form.Group>
 
+      <Form.Group className="mb-3" controlId="FormCategory">
+        <Form.Label>Category</Form.Label>
+        <Form.Select value={category} onChange={e => setCategory(e.target.value)}>
+          <option>Select category...</option>
+          {categories.map(category => (
+            <option key={category}>{category}</option>
+            ))}
+        </Form.Select>
+      </Form.Group>
+
       <Form.Group className="mb-3" controlId="FormShortDescription">
         <Form.Label>Short description</Form.Label>
         <Form.Control 
@@ -92,7 +107,8 @@ PostForm.propTypes = {
   author: PropTypes.string,
   publishedDate: PropTypes.string,
   shortDescription: PropTypes.string,
-  content: PropTypes.string
+  content: PropTypes.string,
+  category: PropTypes.string
 }
 
 export default PostForm

@@ -40,6 +40,8 @@ const SinglePost = () => {
           <br/>
           <b>Published: </b><span className="text-muted">{dateToStr(postData.publishedDate)}</span>
           <br/>
+          <b>Category: </b><span className="text-muted">{postData.category ? postData.category : 'not selected'}</span>
+          <br/>
           <br/>
           <p dangerouslySetInnerHTML={{ __html: postData.content }} />
         </Col>
