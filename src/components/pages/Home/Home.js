@@ -5,9 +5,9 @@ import { NavLink } from 'react-router-dom';
 const Home = () => {
   return(
     <>
-      <Row className="align-items-center">
+      <Row className="align-items-center mb-2">
         <Col>
-          <h2>All Posts</h2>
+          <h2 className='mb-0'>All Posts</h2>
         </Col>
         <Col className="d-flex justify-content-end">
           <Button as={NavLink} to="/post/add" variant="info" className="text-light">Add Post</Button>
